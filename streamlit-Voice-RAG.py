@@ -113,10 +113,8 @@ def speak_text(text: str, lang_code='en'):
 
 def main():
     st.set_page_config(page_title="Multilingual QA", page_icon="📚")
-    st.title("📚 PDF Q&A – Multilingual (Voice Enabled)")
-
+    st.title("📚 Voice-Driven Multilingual RAG Assistant")
     api_key = os.getenv('GENAI_API_KEY', 'AIzaSyA5xtoT9HAjH-wsa7OHFXlBjRRcXwCFBMg')
-
     if 'rag' not in st.session_state:
         st.session_state.rag = RAGSingleLanguage(api_key)
         st.session_state.file_done = False

@@ -1,9 +1,27 @@
+# ——— Patch 1: Stop Streamlit watcher hitting torch._classes.__path__ ———
+import torch
+class _DummyPath:
+    _path = []
+torch._classes.__path__ = _DummyPath()
+
+# ——— Patch 2: Make SentenceTransformer.to() fall back to to_empty() on meta modules ———
+import sentence_transformers as _st
+_BaseST = _st.SentenceTransformer
+class SentenceTransformer(_BaseST):
+    def to(self, *args, **kwargs):
+        try:
+            return super().to(*args, **kwargs)
+        except NotImplementedError:
+            # fallback for meta‐tensors
+            return super().to_empty(*args, **kwargs)
+
+# ——— Your usual imports ———
 import streamlit as st
 import PyPDF2
 import numpy as np
 from typing import List
 from langdetect import detect, detect_langs
-from sentence_transformers import SentenceTransformer
+# note: we no longer import SentenceTransformer here, we use our patched one above
 from sklearn.metrics.pairwise import cosine_similarity
 import google.generativeai as genai
 from gtts import gTTS
@@ -16,6 +34,7 @@ class RAGSingleLanguage:
     def __init__(self, api_key: str):
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-1.5-flash')
+        # uses patched SentenceTransformer
         self.embedder = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
         self.chunks: List[str] = []
         self.embeddings: np.ndarray = np.array([])
@@ -57,7 +76,7 @@ class RAGSingleLanguage:
             raw.append(p.extract_text() or '')
         full = ' '.join(raw)
         words = full.split()
-        self.chunks = [' '.join(words[i:i + chunk_size]) 
+        self.chunks = [' '.join(words[i:i + chunk_size])
                        for i in range(0, len(words), chunk_size)]
         self.embeddings = self.embedder.encode(self.chunks, convert_to_numpy=True)
         return self.detect_languages(full)

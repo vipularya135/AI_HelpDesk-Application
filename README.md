@@ -4,6 +4,14 @@
 
 ---
 
+## Steps to run the project - run the commands in terminal
+
+1. git clone https://github.com/vipularya135/SHARP-Application
+2. cd SHARP-Application
+3. pip install -r requirements.txt
+4. streamlit run streamlit-Text-RAG.py
+---
+
 ## Overview
 
 SHARP-Application is a real-time, voice-first virtual technician that assists users in troubleshooting consumer appliances (e.g., washing machines) by engaging in natural conversations in their native language. Powered by Retrieval-Augmented Generation (RAG), the system retrieves precise instructions from multilingual user manuals and delivers responses through an animated AI avatar, providing a seamless, human-like customer support experience.

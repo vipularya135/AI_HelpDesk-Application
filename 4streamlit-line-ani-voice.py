@@ -76,26 +76,50 @@ class RAGSingleLanguage:
             " ".join(full[i:i+chunk_size])
             for i in range(0, len(full), chunk_size)
         ]
-        self.embeddings = self.embedder.encode(self.chunks, convert_to_numpy=True)
+        # encode with normalization for better similarity
+        self.embeddings = self.embedder.encode(
+            self.chunks,
+            convert_to_numpy=True,
+            normalize_embeddings=True
+        )
         return self.detect_languages(" ".join(pages))
 
     def set_language(self, lang: str):
         self.language = lang
 
-    def answer_question(self, question: str) -> str:
+    def answer_question(self, question: str, top_k: int = 5) -> str:
+        # translate to English if needed
         q_en = self.translate(question, 'en')
-        q_emb = self.embedder.encode([q_en], convert_to_numpy=True)
-        sims = cosine_similarity(q_emb, self.embeddings)[0]
-        top = np.argsort(sims)[::-1][:3]
-        ctx = "\n\n".join(self.chunks[i] for i in top)
+        # encode the question embedding with normalization
+        q_emb = self.embedder.encode(
+            [q_en],
+            convert_to_numpy=True,
+            normalize_embeddings=True
+        )
+        # normalize document embeddings (already normalized above, but ensure unit norm)
+        doc_embeds = self.embeddings / np.linalg.norm(self.embeddings, axis=1, keepdims=True)
+
+        # compute cosine similarities and pick top_k contexts
+        sims = cosine_similarity(q_emb, doc_embeds)[0]
+        top_indices = np.argsort(sims)[::-1][:top_k]
+
+        # build context with similarity scores
+        contexts = [f"[Score: {sims[i]:.2f}]\n{self.chunks[i]}" for i in top_indices]
+        ctx = "\n\n".join(contexts)
+
         prompt = (
-            "Answer using only the context below. Do not hallucinate.\n\n"
+            "Answer the following question using only the provided context. "
+            "Be accurate and detailed. If the answer is not present, say: "
+            "'I apologize, but I cannot find this information in the documentation. "
+            "Please contact SHARP customer support for accurate assistance on this matter.'\n\n"
             f"Context:\n{ctx}\n\nQuestion: {q_en}"
         )
+
         try:
             out = self.model.generate_content(prompt).text.strip()
         except Exception as e:
             return f"Error: {e}"
+        # translate response back
         return self.translate(out, self.language)
 
 # ——— Voice helper ———
@@ -121,7 +145,7 @@ def recognize_voice(lang_code='en-IN') -> str:
 # ——— Main App ———
 def main():
     st.set_page_config(page_title="Voice‑Viz RAG", page_icon="🔊")
-    st.title("🔊 Multilingual RAG with Audio‑Viz")
+    st.title("🔊 SHARP Multilingual RAG with Audio‑Viz")
 
     if 'rag' not in st.session_state:
         st.session_state.rag       = RAGSingleLanguage(GENAI_API_KEY)
@@ -135,7 +159,7 @@ def main():
         "1. Upload PDF  \n"
         "2. Select language  \n"
         "3. Type or speak your question  \n"
-        "4. Watch the line jump as the audio plays"
+        "4. Read or listen to the answer  \n"
     )
 
     uploaded = st.file_uploader("Upload your PDF manual", type="pdf")

@@ -3,7 +3,10 @@
 # ——— Patch 1: Stop Streamlit watcher hitting torch._classes.__path__ ———
 import torch
 class _DummyPath:
-    _path = []
+    def __init__(self):
+        self._path = []
+    def __getattr__(self, name):
+        return []
 torch._classes.__path__ = _DummyPath()
 
 # ——— Patch 2: Make SentenceTransformer.to() fall back to to_empty() on meta modules ———
@@ -145,7 +148,7 @@ def recognize_voice(lang_code='en-IN') -> str:
 # ——— Main App ———
 def main():
     st.set_page_config(page_title="Voice‑Viz RAG", page_icon="🔊")
-    st.title("🔊 SHARP Multilingual RAG with Audio‑Viz")
+    st.title("🔊 SHARP AI Helpdesk")
 
     if 'rag' not in st.session_state:
         st.session_state.rag       = RAGSingleLanguage(GENAI_API_KEY)

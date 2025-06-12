@@ -14,7 +14,7 @@
 
 ## Overview
 
-SHARP-Application is a real-time, voice-first virtual technician that assists users in troubleshooting consumer appliances (e.g., washing machines) by engaging in natural conversations in their native language. Powered by Retrieval-Augmented Generation (RAG), the system retrieves precise instructions from multilingual user manuals and delivers responses through an animated AI avatar, providing a seamless, human-like customer support experience.
+SHARP-Application is a real-time, voice-first virtual technician that assists users in troubleshooting consumer appliances (e.g., washing machines) by engaging in natural conversations in their native language. Powered by Retrieval-Augmented Generation (RAG), the system retrieves precise instructions from multilingual user manuals and delivers responses through an speech, providing a seamless, human-like customer support experience.
 
 ---
 
@@ -23,8 +23,6 @@ SHARP-Application is a real-time, voice-first virtual technician that assists us
 - **Voice-First Interaction:** Users can ask troubleshooting questions by speaking naturally in any supported language (e.g., English, Japanese, Chinese, Hindi).
 - **Accurate Retrieval:** Employ RAG techniques to search and extract relevant manual sections for user queries.
 - **Multilingual Understanding:** Detect spoken language, process queries, and generate responses in the same language.
-- **Realistic Avatar Response:** Present answers via a lifelike AI avatar with synchronized speech and facial movements, enhancing engagement.
-
 ---
 
 ## Key Features
@@ -41,9 +39,6 @@ SHARP-Application is a real-time, voice-first virtual technician that assists us
 - **Text-to-Speech (TTS) Synthesis:**  
   Converts generated text into natural-sounding speech in the detected language.
 
-- **AI Avatar Renderer:**  
-  Uses viseme-driven lip syncing and facial animation to deliver responses through a virtual assistant graphic.
-
 ---
 
 ## Technical Architecture
@@ -53,8 +48,6 @@ SHARP-Application is a real-time, voice-first virtual technician that assists us
 - **Vector Database:** ChromaDB (or Pinecone) to store and search embeddings of manual chunks.
 - **RAG Pipeline:** LangChain to handle document ingestion, splitting, embedding, and retrieval.
 - **LLM Backend:** Google Gemini Pro for answer generation.
-- **TTS Engine:** ElevenLabs or Google Cloud TTS for multilingual speech synthesis.
-- **Orchestration API:** FastAPI to coordinate ASR, retrieval, LLM calls, and TTS.
 
 ---
 
@@ -92,9 +85,6 @@ SHARP-Application is a real-time, voice-first virtual technician that assists us
 - Detect user’s spoken language automatically.
 - Ensure the system replies in the same language as the input.
 
-### 7. Avatar Integration (Optional for MVP)
-- Use Three.js or [D-ID API](https://www.d-id.com/) to render an animated avatar that lip syncs with the generated speech.
-
 ---
 
 ## Usage Flow
@@ -105,5 +95,4 @@ SHARP-Application is a real-time, voice-first virtual technician that assists us
    b. Searches manuals for relevant troubleshooting steps (RAG).  
    c. Generates a concise answer (LLM).  
    d. Converts the answer to speech (TTS).  
-   e. Animates the AI avatar to deliver the answer with synchronized lips and facial movement.
 

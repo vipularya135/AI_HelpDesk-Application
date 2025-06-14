@@ -1,6 +1,6 @@
 # AI_HelpDesk-Application
 
-**Voice-Driven Multilingual RAG Assistant with AI Avatar**
+**Voice-Driven Multilingual RAG Assistant**
 
 ---
 

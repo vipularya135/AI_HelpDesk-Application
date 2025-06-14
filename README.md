@@ -41,15 +41,6 @@ SHARP-Application is a real-time, voice-first virtual technician that assists us
 
 ---
 
-## Technical Architecture
-
-- **Frontend:** React-based web application with WebRTC for audio streaming and Three.js (or D-ID) for avatar rendering.
-- **ASR & Language ID:** OpenAI Whisper (or alternative) for real-time speech-to-text and language detection.
-- **Vector Database:** ChromaDB (or Pinecone) to store and search embeddings of manual chunks.
-- **RAG Pipeline:** LangChain to handle document ingestion, splitting, embedding, and retrieval.
-- **LLM Backend:** Google Gemini Pro for answer generation.
-
----
 
 ## Benefits
 

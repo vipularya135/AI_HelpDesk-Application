@@ -114,7 +114,7 @@ class RAGSingleLanguage:
             "Answer the following question using only the provided context. "
             "Be accurate and detailed. If the answer is not present, say: "
             "'I apologize, but I cannot find this information in the documentation. "
-            "Please contact SHARP customer support for accurate assistance on this matter.'\n\n"
+            "Please contact customer support for accurate assistance on this matter.'\n\n"
             f"Context:\n{ctx}\n\nQuestion: {q_en}"
         )
 
@@ -148,7 +148,7 @@ def recognize_voice(lang_code='en-IN') -> str:
 # ——— Main App ———
 def main():
     st.set_page_config(page_title="Voice‑Viz RAG", page_icon="🔊")
-    st.title("🔊 SHARP AI Helpdesk")
+    st.title("🔊 AI Helpdesk")
 
     if 'rag' not in st.session_state:
         st.session_state.rag       = RAGSingleLanguage(GENAI_API_KEY)

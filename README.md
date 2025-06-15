@@ -80,10 +80,10 @@ SHARP-Application is a real-time, voice-first virtual technician that assists us
 
 ## Usage Flow
 
-1. **User**: Speaks a troubleshooting question in their language.
+1. **User**: Speaks a troubleshooting question in their language
 2. **System**:  
-   a. Captures and transcribes the speech (ASR + Language ID).  
-   b. Searches manuals for relevant troubleshooting steps (RAG).  
-   c. Generates a concise answer (LLM).  
-   d. Converts the answer to speech (TTS).  
+   a. Captures and transcribes the speech (ASR + Language ID) 
+   b. Searches manuals for relevant troubleshooting steps (RAG) 
+   c. Generates a concise answer (LLM)
+   d. Converts the answer to speech (TTS)
 

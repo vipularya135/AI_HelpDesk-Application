@@ -1,5 +1,3 @@
-# streamlit-voice-viz.py
-
 # ——— Patch 1: Stop Streamlit watcher hitting torch._classes.__path__ ———
 import torch
 class _DummyPath:
